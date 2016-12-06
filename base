@@ -1,0 +1,58 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+ 
+public class PlayerStuff : MonoBehaviour {
+    public GameObject Player;
+    public float speed;
+    private Rigidbody2D rb;
+    public Text countText;
+    public int count;
+    //public Animation playeranimb;
+      void Start() {
+        Player.gameObject.transform.position = new Vector3(200, 0, 0);
+        rb = GetComponent<Rigidbody2D>();
+        count = 0;
+        SetCountText();
+        //playeranimb = GetComponent<Animation>();
+      }
+      void Update() {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            Vector3 position = this.transform.position;
+            position.x--;
+            this.transform.position = position;
+            //playeranimb.Play();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            Vector3 position = this.transform.position;
+            position.x++;
+            this.transform.position = position;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            Vector3 position = this.transform.position;
+            position.y++;
+            this.transform.position = position;
+        }
+       if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            Vector3 position = this.transform.position;
+            position.y--;
+            this.transform.position = position;
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Pick Up")) {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+        }
+        else if (other.gameObject.CompareTag("Eat")) {
+            other.gameObject.SetActive(false);   
+        }
+        else if (other.gameObject.CompareTag("Fight")) {
+            other.gameObject.SetActive(false);
+        }
+    }
+    void SetCountText() {
+        countText.text = "Health: " + count;
+    }
+}
